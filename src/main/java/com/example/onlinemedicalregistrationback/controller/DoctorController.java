@@ -36,17 +36,6 @@ public class DoctorController {
         return new Responses.GetAvailableRecordsResponseBody(doctor.getRecords());
     }
 
-    @PostMapping("/doctor")
-    asass addDoctor(@RequestBody addDoc addDoc){
-        Set<Record> records = new HashSet<>();
-        for(int i = 0; i < 10; ++i){
-            records.add(new Record(LocalDateTime.now().plusHours(i)));
-        }
-        recordRepository.saveAll(records);
-        Doctor doctor = new Doctor(addDoc.name,addDoc.organization, records);
-        doctorRepository.save(doctor);
-        return new asass("Zhopa");
-    }
 
     @AllArgsConstructor
     @NoArgsConstructor
@@ -58,12 +47,4 @@ public class DoctorController {
         String organization;
     }
 
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @ToString
-    @Getter
-    @Setter
-    public static class asass implements Serializable{
-        String zhopa;
-    }
 }
