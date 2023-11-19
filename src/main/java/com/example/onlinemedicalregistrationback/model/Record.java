@@ -1,8 +1,6 @@
 package com.example.onlinemedicalregistrationback.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,5 +17,9 @@ public class Record {
 
     public Record(LocalDateTime time) {
         this.time = time;
+    }
+
+    public Record() {
+
     }
 }
