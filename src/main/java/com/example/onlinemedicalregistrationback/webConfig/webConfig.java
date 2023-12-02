@@ -39,7 +39,9 @@ public class webConfig extends WebSecurityConfigurerAdapter {
                         "http://25.60.201.230:3000",
                         "https://web.postman.co/",
                         "http://localhost:12975",
-                        "http://www.rebol.net/"
+                        "http://www.rebol.net/",
+                        "https://fd03-93-188-41-71.ngrok-free.app",
+                        "https://b699-93-188-41-64.ngrok-free.app"
                 )
         );
         config.setAllowedMethods(List.of("GET", "HEAD", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
