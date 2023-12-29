@@ -1,6 +1,7 @@
 package com.example.onlinemedicalregistrationback.serializableClasses;
 
 import com.example.onlinemedicalregistrationback.notDBModel.DoctorView;
+import com.example.onlinemedicalregistrationback.notDBModel.RecordView;
 import lombok.*;
 import com.example.onlinemedicalregistrationback.model.Record;
 
@@ -15,7 +16,10 @@ public class Responses {
     @Getter
     @Setter
     public static class GetAvailableRecordsResponseBody implements Serializable{
-        ArrayList<Record> availableRecords;
+        ArrayList<RecordView> availableRecords;
+        String name;
+        String specialization;
+        String organization;
     }
 
     @AllArgsConstructor
@@ -91,4 +95,15 @@ public class Responses {
     public static class SpecializationsResponseBody implements Serializable {
         List<String> specializations;
     }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @ToString
+    @Getter
+    @Setter
+    public static class SignUpResponseBody implements Serializable {
+        String policy;
+    }
+
+
 }

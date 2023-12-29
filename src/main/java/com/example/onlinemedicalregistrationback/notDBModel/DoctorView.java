@@ -17,6 +17,12 @@ public class DoctorView {
     String organization;
     String specialization;
 
+    public DoctorView(String name, String organization, String specialization) {
+        this.name = name;
+        this.organization = organization;
+        this.specialization = specialization;
+    }
+
     public static final Comparator<DoctorView> COMPARE_BY_NAME = new Comparator<DoctorView>() {
         @Override
         public int compare(DoctorView o1, DoctorView o2) {

@@ -21,4 +21,10 @@ public class User {
     String passport;
     String password;
     String policy;
+
+    public User(String passport, String password, String policy) {
+        this.passport = passport;
+        this.password = password;
+        this.policy = policy;
+    }
 }

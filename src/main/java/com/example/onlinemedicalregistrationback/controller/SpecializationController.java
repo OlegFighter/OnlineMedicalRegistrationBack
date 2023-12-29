@@ -14,7 +14,7 @@ public class SpecializationController {
     }
 
     @PostMapping("/specializations")
-    Responses.OrganizationsResponseBody allOrganizations(){
-        return new Responses.OrganizationsResponseBody(specializationRepository.findAllNames());
+    Responses.SpecializationsResponseBody allOrganizations(){
+        return new Responses.SpecializationsResponseBody(specializationRepository.findAllNames());
     }
 }

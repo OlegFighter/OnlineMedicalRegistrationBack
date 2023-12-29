@@ -40,10 +40,10 @@ public class webConfig extends WebSecurityConfigurerAdapter {
                         "https://web.postman.co/",
                         "http://localhost:12975",
                         "http://www.rebol.net/",
-                        "https://fd03-93-188-41-71.ngrok-free.app",
-                        "https://b699-93-188-41-64.ngrok-free.app"
+                        "https://fe2c-178-176-75-203.ngrok-free.app",
+                        "https://335f-31-173-86-130.ngrok-free.app"
                 )
-        );
+        ); //УБИРАТЬ СЛЭШ В КОНЦЕ ССЫЛКИ НА NGROK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         config.setAllowedMethods(List.of("GET", "HEAD", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         config.setAllowedHeaders(List.of("Content-Types", "Content-Type", "Accept-Encoding", "Connection", "Accept", "Content-Length", "Host",
                 "authorization", "User-Agent", "cache-control","postman-token", "x-auth-token"));

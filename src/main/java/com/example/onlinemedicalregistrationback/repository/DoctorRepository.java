@@ -8,6 +8,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.ArrayList;
 
 public interface DoctorRepository extends JpaRepository<Doctor, Long> {
+    @Query(value = "select d from Doctor d")
+    ArrayList<Doctor> findAllD();
+
     @Query(value = "select d from Doctor d where d.name like %:reqName%")
     ArrayList<Doctor> findByName(@Param("reqName") String reqName);
 
