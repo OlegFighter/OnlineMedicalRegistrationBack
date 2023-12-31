@@ -1,9 +1,6 @@
-package com.example.onlinemedicalregistrationback.serializableClasses;
+package com.example.onlinemedicalregistrationback.dto;
 
-import com.example.onlinemedicalregistrationback.notDBModel.DoctorView;
-import com.example.onlinemedicalregistrationback.notDBModel.RecordView;
 import lombok.*;
-import com.example.onlinemedicalregistrationback.model.Record;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,7 +13,7 @@ public class Responses {
     @Getter
     @Setter
     public static class GetAvailableRecordsResponseBody implements Serializable{
-        ArrayList<RecordView> availableRecords;
+        List<RecordView> availableRecords;
         String name;
         String specialization;
         String organization;
@@ -27,17 +24,8 @@ public class Responses {
     @ToString
     @Getter
     @Setter
-    public static class CreateRecordResponseBody implements Serializable{
-        String result;
-    }
-
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @ToString
-    @Getter
-    @Setter
     public static class SearchResponseBody implements Serializable {
-        ArrayList<DoctorView> doctors;
+        List<DoctorView> doctors;
         int count;
     }
 
@@ -47,7 +35,7 @@ public class Responses {
     @Getter
     @Setter
     public static class AllDoctorResponseBody implements Serializable {
-        ArrayList<DoctorView> doctors;
+        List<DoctorView> doctors;
         int count;
     }
 
@@ -57,7 +45,7 @@ public class Responses {
     @Getter
     @Setter
     public static class DoctorsByOrgResponseBody implements Serializable {
-        ArrayList<DoctorView> doctors;
+        List<DoctorView> doctors;
     }
 
     @AllArgsConstructor

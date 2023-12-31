@@ -1,4 +1,4 @@
-package com.example.onlinemedicalregistrationback.notDBModel;
+package com.example.onlinemedicalregistrationback.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,10 +23,6 @@ public class DoctorView {
         this.specialization = specialization;
     }
 
-    public static final Comparator<DoctorView> COMPARE_BY_NAME = new Comparator<DoctorView>() {
-        @Override
-        public int compare(DoctorView o1, DoctorView o2) {
-            return o1.getName().compareTo(o2.getName());
-        }
-    };
+    public static final Comparator<DoctorView> COMPARE_BY_NAME =
+        Comparator.comparing(DoctorView::getName);
 }

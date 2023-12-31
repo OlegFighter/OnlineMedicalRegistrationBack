@@ -2,7 +2,6 @@ package com.example.onlinemedicalregistrationback.model;
 
 import javax.persistence.*;
 
-import com.example.onlinemedicalregistrationback.notDBModel.DoctorView;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +13,7 @@ import java.util.Comparator;
 @Entity
 public class Record {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "record_seq")
     long id;
     LocalDateTime time;
 
@@ -26,10 +25,5 @@ public class Record {
 
     }
 
-    public static final Comparator<Record> COMPARE_BY_TIME = new Comparator<Record>() {
-        @Override
-        public int compare(Record o1, Record o2) {
-            return o1.getTime().compareTo(o2.getTime());
-        }
-    };
+    public static final Comparator<Record> COMPARE_BY_TIME = Comparator.comparing(Record::getTime);
 }

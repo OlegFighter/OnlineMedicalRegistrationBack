@@ -14,8 +14,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Transactional
     @Query(value = "update users u set password = :newPassword where u.policy =:userPolicy",
     nativeQuery = true)
-    void setPassword(@Param("newPassword") String newPassword, @Param("userPolicy") String userPolicy);
+    void setPassword(String newPassword, String userPolicy);
 
     @Query(value = "select * from users u where u.policy =:userPolicy", nativeQuery = true)
-    User findByPolicy(@Param("userPolicy") String userPolicy);
+    User findByPolicy(String userPolicy);
 }

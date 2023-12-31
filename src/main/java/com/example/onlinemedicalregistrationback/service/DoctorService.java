@@ -1,19 +1,23 @@
 package com.example.onlinemedicalregistrationback.service;
 
+import com.example.onlinemedicalregistrationback.dto.AllDoctorsRequestBody;
+import com.example.onlinemedicalregistrationback.dto.GetAvailableRecordsRequestBody;
+import com.example.onlinemedicalregistrationback.dto.SearchRequestBody;
 import com.example.onlinemedicalregistrationback.model.Doctor;
 import com.example.onlinemedicalregistrationback.model.Record;
-import com.example.onlinemedicalregistrationback.notDBModel.DoctorView;
-import com.example.onlinemedicalregistrationback.notDBModel.RecordView;
-import com.example.onlinemedicalregistrationback.notFoundExceptions.DoctorNotFoundException;
+import com.example.onlinemedicalregistrationback.dto.DoctorView;
+import com.example.onlinemedicalregistrationback.dto.RecordView;
+import com.example.onlinemedicalregistrationback.exception.DoctorNotFoundException;
 import com.example.onlinemedicalregistrationback.repository.DoctorRepository;
 import com.example.onlinemedicalregistrationback.repository.RecordRepository;
-import com.example.onlinemedicalregistrationback.serializableClasses.Requests;
-import com.example.onlinemedicalregistrationback.serializableClasses.Responses;
+import com.example.onlinemedicalregistrationback.dto.Responses;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DoctorService {
@@ -25,27 +29,37 @@ public class DoctorService {
         this.recordRepository = recordRepository;
     }
 
-    public Responses.GetAvailableRecordsResponseBody getRecords(Requests.GetAvailableRecordsRequestBody
-                                                                        getAvailableRecordsRequestBody){
-        ArrayList<Record> records = recordRepository.findByDate(getAvailableRecordsRequestBody.getDoctorId(), getAvailableRecordsRequestBody.getIndexFrom());
+    public Responses.GetAvailableRecordsResponseBody getRecords(
+        GetAvailableRecordsRequestBody body){
+        List<Record> records = recordRepository.findByDate(
+            body.getDoctorId(),
+            body.getOffset()
+        );
         records.sort(Record.COMPARE_BY_TIME);
-        Doctor doctor = doctorRepository.findById(getAvailableRecordsRequestBody.getDoctorId())
-                .orElseThrow(() -> new DoctorNotFoundException(getAvailableRecordsRequestBody.getDoctorId()));
-        ArrayList<RecordView> recordViews = new ArrayList<>();
-        for (Record record : records) {
-            recordViews.add(new RecordView(record));
-        }
-        return new Responses.GetAvailableRecordsResponseBody(recordViews, doctor.getName(), doctor.getSpecialization(),
-                doctor.getOrganization());
+        Doctor doctor = doctorRepository.findById(body.getDoctorId())
+                .orElseThrow(() -> new DoctorNotFoundException(body.getDoctorId()));
+        List<RecordView> recordViews = records.stream()
+            .map(RecordView::new)
+            .collect(Collectors.toList());
+// map is equivalent to this
+//        for (Record record : records) {
+//            recordViews.add(new RecordView(record));
+//        }
+        return new Responses.GetAvailableRecordsResponseBody(
+            recordViews,
+            doctor.getName(),
+            doctor.getSpecialization(),
+            doctor.getOrganization()
+        );
     }
 
-    public Responses.AllDoctorResponseBody allDoctors(Requests.AllDoctorsRequestBody allDoctorsRequestBody){
+    public Responses.AllDoctorResponseBody allDoctors(AllDoctorsRequestBody allDoctorsRequestBody){
         List<Doctor> doctors = doctorRepository.findAll();
-        ArrayList<DoctorView> doctorsForResponse = new ArrayList<>();
-        for (Doctor ent : doctors) {
-            doctorsForResponse.add(new DoctorView(ent.getId(), ent.getName(), ent.getOrganization(), ent.getSpecialization()));
-        }
+        List<DoctorView> doctorsForResponse = doctors.stream()
+            .map(d -> new DoctorView(d.getId(), d.getName(), d.getOrganization(), d.getSpecialization()))
+            .collect(Collectors.toList());
         doctorsForResponse.sort(DoctorView.COMPARE_BY_NAME);
+        // TODO: rewrite with sql
         int index = allDoctorsRequestBody.getIndexFrom();
         ArrayList<DoctorView> result = new ArrayList<>();
         while (index < doctorsForResponse.size() && index < allDoctorsRequestBody.getIndexFrom()+10){
@@ -56,9 +70,9 @@ public class DoctorService {
         return new Responses.AllDoctorResponseBody(result, count);
     }
 
-    public Responses.SearchResponseBody search(Requests.SearchRequestBody searchRequestBody){
+    public Responses.SearchResponseBody search(SearchRequestBody searchRequestBody){
         final String flag = "EMPTY_VALUE";
-        ArrayList<Doctor> doctors = new ArrayList<>();
+        List<Doctor> doctors = new ArrayList<>();
         if (!Objects.equals(searchRequestBody.getName(), flag)
                 && !Objects.equals(searchRequestBody.getOrganization(), flag)
                 && !Objects.equals(searchRequestBody.getSpecialization(), flag)){
@@ -109,6 +123,7 @@ public class DoctorService {
         }
         doctorsForResponse.sort(DoctorView.COMPARE_BY_NAME);
         int index = searchRequestBody.getIndexFrom();
+        // TODO: rewrite with limit offset in sql
         ArrayList<DoctorView> result = new ArrayList<>();
         while (index < doctorsForResponse.size() && index < searchRequestBody.getIndexFrom()+10){
             result.add(doctorsForResponse.get(index));

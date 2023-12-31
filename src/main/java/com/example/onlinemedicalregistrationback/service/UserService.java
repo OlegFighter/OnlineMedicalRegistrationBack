@@ -1,12 +1,13 @@
 package com.example.onlinemedicalregistrationback.service;
 
+import com.example.onlinemedicalregistrationback.dto.SignInRequestBody;
+import com.example.onlinemedicalregistrationback.dto.SignUpRequestBody;
+import com.example.onlinemedicalregistrationback.dto.VerifyRequestBody;
 import com.example.onlinemedicalregistrationback.model.User;
 import com.example.onlinemedicalregistrationback.repository.UserRepository;
-import com.example.onlinemedicalregistrationback.serializableClasses.Requests;
-import com.example.onlinemedicalregistrationback.serializableClasses.Responses;
+import com.example.onlinemedicalregistrationback.dto.Responses;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Objects;
@@ -18,7 +19,7 @@ public class UserService {
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-    public Responses.VerifyResponseBody verifying (Requests.VerifyRequestBody verifyRequestBody){
+    public void verify(VerifyRequestBody verifyRequestBody){
         if (verifyRequestBody.getPolicy().length() != 16){
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Номер полиса неверный или такой полис не зарегистрирован. Проверьте данные и попробуйте снова. Для справок обращаться по тел. 122 или на сайт mos.ru.");
         }
@@ -27,15 +28,13 @@ public class UserService {
         }
         User newUser = new User(verifyRequestBody.getPassport(), "NULL", verifyRequestBody.getPolicy());
         userRepository.save(newUser);
-        return new Responses.VerifyResponseBody("OK");
     }
 
-    public Responses.SignUpResponseBody signUp (Requests.SignUpRequestBody signUpRequestBody){
+    public void signUp (SignUpRequestBody signUpRequestBody){
         userRepository.setPassword(signUpRequestBody.getPassword(), signUpRequestBody.getPolicy());
-        return new Responses.SignUpResponseBody("OK");
     }
 
-    public Responses.SignInResponseBody signIn (Requests.SignInRequestBody signInRequestBody){
+    public void signIn (SignInRequestBody signInRequestBody){
         User user = userRepository.findByPolicy(signInRequestBody.getPolicy());
         if (Objects.isNull(user)){
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Неверный номер полиса! Уточните данные или пройдите процедуру регистрации.");
@@ -43,6 +42,5 @@ public class UserService {
         if (!Objects.equals(signInRequestBody.getPassword(), user.getPassword())){
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Неправильный пароль!");
         }
-        return new Responses.SignInResponseBody("OK");
     }
 }
